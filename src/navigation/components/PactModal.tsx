@@ -13,12 +13,13 @@ import { updateSetting } from '@/core/common'
 import { checkUpdate } from '@/core/version'
 import { initDeeplink } from '@/core/init/deeplink'
 import settingState from '@/store/setting/state'
+import { PROJECT_README_URL } from '@/config/project'
 
 const Content = () => {
   const theme = useTheme()
 
   const openHomePage = () => {
-    void openUrl('https://github.com/lyswhut/lx-music-mobile#readme')
+    void openUrl(PROJECT_README_URL)
   }
   const openLicensePage = () => {
     void openUrl('http://www.apache.org/licenses/LICENSE-2.0')
@@ -222,4 +223,3 @@ const styles = createStyle({
 })
 
 export default PactModal
-

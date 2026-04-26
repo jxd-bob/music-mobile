@@ -6,6 +6,18 @@ Project versioning adheres to [Semantic Versioning](http://semver.org/).
 Commit convention is based on [Conventional Commits](http://conventionalcommits.org).
 Change log format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [1.8.3](https://github.com/jxd-bob/music-mobile/compare/v1.8.2...v1.8.3) - 2026-04-26
+
+### 新增
+
+- 设置里的在线自定义源导入新增社区音源快捷入口
+
+### 优化
+
+- 软件更新改为检查 `jxd-bob/music-mobile` 的版本信息与 GitHub Releases
+- 关于页、协议页等仓库入口切换到当前维护仓库
+- 新增发布校验流程，自动检查 tag、Release 资产与 `publish/version.json` 是否一致
+
 ## [1.8.2](https://github.com/lyswhut/lx-music-mobile/compare/v1.8.1...v1.8.2) - 2026-03-28
 
 ### 修复

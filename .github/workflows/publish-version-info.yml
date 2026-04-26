@@ -1,4 +1,4 @@
-name: Publish NPM Version Info
+name: Verify Release Metadata
 
 on:
   workflow_dispatch:
@@ -6,12 +6,43 @@ on:
     types: [published]
 
 jobs:
-  dispatch:
+  verify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.PAT }}
-          repository: lyswhut/lx-music-mobile-version-info
-          event-type: npm-release
+      - name: Check out git repository
+        uses: actions/checkout@v4
+
+      - name: Verify tag, package version and version.json
+        shell: bash
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          if [ -z "$TAG_NAME" ]; then
+            TAG_NAME="$(gh release view --json tagName --jq .tagName)"
+          fi
+          PACKAGE_VERSION="$(node -p "require('./package.json').version")"
+          VERSION_JSON_VERSION="$(node -p "require('./publish/version.json').version")"
+          EXPECTED_TAG="v${PACKAGE_VERSION}"
+
+          echo "tag: $TAG_NAME"
+          echo "package.json version: $PACKAGE_VERSION"
+          echo "publish/version.json version: $VERSION_JSON_VERSION"
+
+          test "$TAG_NAME" = "$EXPECTED_TAG"
+          test "$PACKAGE_VERSION" = "$VERSION_JSON_VERSION"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify release assets
+        shell: bash
+        run: |
+          PACKAGE_VERSION="$(node -p "require('./package.json').version")"
+          gh release view "v${PACKAGE_VERSION}" --json assets --jq '.assets[].name' > assets.txt
+          grep -x "lx-music-mobile-v${PACKAGE_VERSION}-arm64-v8a.apk" assets.txt
+          grep -x "lx-music-mobile-v${PACKAGE_VERSION}-armeabi-v7a.apk" assets.txt
+          grep -x "lx-music-mobile-v${PACKAGE_VERSION}-x86_64.apk" assets.txt
+          grep -x "lx-music-mobile-v${PACKAGE_VERSION}-x86.apk" assets.txt
+          grep -x "lx-music-mobile-v${PACKAGE_VERSION}-universal.apk" assets.txt
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

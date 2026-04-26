@@ -3,7 +3,7 @@
  * @param {string} text
  * @returns
  */
-export const parseChangelog = async(text) => {
+const parseChangelog = async(text) => {
   const versions = []
   const lines = text.split(/\r\n|\r|\n/)
   let currentVersion = null
@@ -21,7 +21,7 @@ export const parseChangelog = async(text) => {
         })
       }
       currentVersion = versionMatch[1]
-      currentDate = versionMatch[3]
+      currentDate = versionMatch[2]
       currentDesc = ''
     } else {
       currentDesc += `${line}\n`
@@ -35,6 +35,9 @@ export const parseChangelog = async(text) => {
       desc: currentDesc.trim(),
     })
   }
-
   return versions
+}
+
+module.exports = {
+  parseChangelog,
 }
