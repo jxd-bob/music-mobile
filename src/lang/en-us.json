@@ -476,6 +476,7 @@
   "user_api_btn_import": "Import",
   "user_api_btn_import_local": "From Local",
   "user_api_btn_import_online": "From Network",
+  "user_api_btn_import_online_default": "Community Sources (Accelerated Links)",
   "user_api_btn_import_online_input_confirm": "Import",
   "user_api_btn_import_online_input_loading": "Importing...",
   "user_api_btn_import_online_input_tip": "Please enter an HTTP link",
