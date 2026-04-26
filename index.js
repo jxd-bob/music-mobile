@@ -1,8 +1,12 @@
 /**
  * @format
  */
+import { AppRegistry } from 'react-native'
 import './shim'
 import './src/app'
+import { runAlarmClockHeadlessTask } from './src/core/player/alarmClockHeadless'
+
+AppRegistry.registerHeadlessTask('AlarmClockHeadlessTask', () => runAlarmClockHeadlessTask)
 // import './test'
 // import '@/utils/errorHandle'
 // import { Navigation } from 'react-native-navigation'

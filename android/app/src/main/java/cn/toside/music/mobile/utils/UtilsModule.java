@@ -43,6 +43,7 @@ public class UtilsModule extends ReactContextBaseJavaModule {
     super(reactContext);
     this.reactContext = reactContext;
     utilsEvent = new UtilsEvent(reactContext);
+    AlarmClockBridge.setReactContext(reactContext);
     registerScreenBroadcastReceiver();
   }
 
@@ -381,5 +382,51 @@ public class UtilsModule extends ReactContextBaseJavaModule {
       }
     }).start();
   }
-}
 
+  @ReactMethod
+  public void openAutoStartSettings(Promise promise) {
+    new Thread(() -> {
+      try {
+        boolean result = AutoStartPermissionUtil.openAutoStartSettings(
+          reactContext.getApplicationContext(),
+          reactContext.getPackageName()
+        );
+        promise.resolve(result);
+      } catch (Exception e) {
+        promise.reject("ERROR", e);
+      }
+    }).start();
+  }
+
+  @ReactMethod
+  public void scheduleAlarmClock(double timestamp, String alarmTime, Promise promise) {
+    try {
+      AlarmClockScheduler.schedule(reactContext.getApplicationContext(), (long) timestamp, alarmTime);
+      promise.resolve(true);
+    } catch (Exception e) {
+      promise.reject("ALARM_CLOCK_SCHEDULE_ERROR", e);
+    }
+  }
+
+  @ReactMethod
+  public void cancelAlarmClock(Promise promise) {
+    try {
+      AlarmClockScheduler.cancel(reactContext.getApplicationContext());
+      promise.resolve(true);
+    } catch (Exception e) {
+      promise.reject("ALARM_CLOCK_CANCEL_ERROR", e);
+    }
+  }
+
+  @ReactMethod
+  public void consumePendingAlarmClockTrigger(Promise promise) {
+    long timestamp = AlarmClockScheduler.consumePendingTriggerTimestamp(reactContext.getApplicationContext());
+    if (timestamp <= 0) {
+      promise.resolve(null);
+      return;
+    }
+    WritableMap params = Arguments.createMap();
+    params.putDouble("timestamp", timestamp);
+    promise.resolve(params);
+  }
+}

@@ -6,6 +6,18 @@ Project versioning adheres to [Semantic Versioning](http://semver.org/).
 Commit convention is based on [Conventional Commits](http://conventionalcommits.org).
 Change log format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [1.8.4](https://github.com/jxd-bob/music-mobile/compare/v1.8.3...v1.8.4) - 2026-04-26
+
+### 新增
+
+- 新增音乐闹钟，支持单次、每天、周末、法定工作日重复方式
+- 闹钟支持随机播放当前列表或我的收藏，并可单独应用闹钟音量
+- 新增闹钟列表、批量启停、跳过一次、自启动提醒等配套功能
+
+### 优化
+
+- 闹钟支持开机、时区变更、应用更新后恢复调度
+
 ## [1.8.3](https://github.com/jxd-bob/music-mobile/compare/v1.8.2...v1.8.3) - 2026-04-26
 
 ### 新增

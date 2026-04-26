@@ -2,6 +2,29 @@ import type { Track as RNTrack } from 'react-native-track-player'
 
 declare global {
   namespace LX {
+    namespace AlarmClock {
+      type Repeat = LX.AppSetting['player.alarmRepeat']
+      type Source = LX.AppSetting['player.alarmSource']
+
+      interface Item {
+        id: string
+        time: string
+        enabled: boolean
+        repeat: Repeat
+        source: Source
+        applyVolume: boolean
+        volume: number
+        skipDates: string[]
+      }
+
+      interface NextInfo {
+        alarm: Item
+        time: string
+        timestamp: number
+        dateKey: string
+      }
+    }
+
     namespace Player {
       interface MusicInfo {
         id: string | null

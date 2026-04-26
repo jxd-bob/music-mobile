@@ -226,10 +226,13 @@ const debouncePlay = debounceBackgroundTimer((musicInfo: LX.Player.PlayMusic) =>
 }, 200)
 
 // 处理音乐播放
-const handlePlay = async() => {
+const handlePlay = async(skipSystemPrompt = false) => {
+  skipSystemPrompt ||= global.lx.isHeadlessTaskRunning
   if (!isInitialized()) {
-    await checkNotificationPermission()
-    void checkIgnoringBatteryOptimization()
+    if (!skipSystemPrompt) {
+      await checkNotificationPermission()
+      void checkIgnoringBatteryOptimization()
+    }
     await playerInitial({
       volume: settingState.setting['player.volume'],
       playRate: settingState.setting['player.playbackRate'],
@@ -279,6 +282,15 @@ export const playListById = async(listId: string, id: string) => {
   if (settingState.setting['player.isAutoCleanPlayedList'] || prevListId != listId) clearPlayedList()
   clearTempPlayeList()
   await handlePlay()
+}
+
+export const playListWithoutPrompt = async(listId: string, index: number) => {
+  const prevListId = playerState.playInfo.playerListId
+  setPlayListId(listId)
+  setPlayMusicInfo(listId, getList(listId)[index])
+  if (settingState.setting['player.isAutoCleanPlayedList'] || prevListId != listId) clearPlayedList()
+  clearTempPlayeList()
+  await handlePlay(true)
 }
 
 /**
@@ -665,4 +677,3 @@ export const dislikeMusic = async() => {
   await addDislikeInfo([{ name: minfo.name, singer: minfo.singer }])
   await playNext(true)
 }
-

@@ -29,6 +29,7 @@ interface GlobalData {
   }
   restorePlayInfo: LX.Player.SavedPlayInfo | null
   isScreenKeepAwake: boolean
+  isHeadlessTaskRunning: boolean
   isPlayedStop: boolean
   isEnableSyncLog: boolean
   isEnableUserApiLog: boolean

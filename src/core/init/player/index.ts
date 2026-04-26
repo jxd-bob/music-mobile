@@ -6,6 +6,7 @@ import initWatchList from './watchList'
 import initPlayProgress from './playProgress'
 import initPreloadNextMusic from './preloadNextMusic'
 import initLyric from './lyric'
+import { initAlarmClockRuntime, restoreAlarmClock } from '@/core/player/alarmClock'
 
 export default async(setting: LX.AppSetting) => {
   await initPlayer(setting)
@@ -16,4 +17,6 @@ export default async(setting: LX.AppSetting) => {
   initWatchList()
   initPlayProgress()
   initPreloadNextMusic()
+  initAlarmClockRuntime()
+  await restoreAlarmClock()
 }

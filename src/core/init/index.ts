@@ -14,6 +14,7 @@ import settingState from '@/store/setting/state'
 import { checkUpdate } from '@/core/version'
 import { bootLog } from '@/utils/bootLog'
 import { cheatTip } from '@/utils/tools'
+import { handlePendingAlarmClockTrigger } from '@/core/player/alarmClock'
 
 let isFirstPush = true
 const handlePushedHomeScreen = async() => {
@@ -57,6 +58,8 @@ export default async() => {
   bootLog('Player inited.')
   await dataInit(setting)
   bootLog('Data inited.')
+  await handlePendingAlarmClockTrigger()
+  bootLog('Alarm trigger handled.')
   await initCommonState(setting)
   bootLog('Common State inited.')
 

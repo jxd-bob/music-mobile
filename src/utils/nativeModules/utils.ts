@@ -99,3 +99,42 @@ export const requestIgnoreBatteryOptimization = async() => new Promise<boolean>(
     resolve(false)
   })
 })
+
+export const openAutoStartSettings = async() => new Promise<boolean>((resolve) => {
+  let subscription = AppState.addEventListener('change', (state) => {
+    if (state != 'active') return
+    subscription.remove()
+    setTimeout(() => {
+      resolve(true)
+    }, 500)
+  })
+  UtilsModule.openAutoStartSettings().then((result: boolean) => {
+    if (result) return
+    subscription.remove()
+    resolve(false)
+  })
+})
+
+export const scheduleNativeAlarmClock = async(timestamp: number, alarmTime: string) => {
+  return UtilsModule.scheduleAlarmClock(timestamp, alarmTime) as Promise<boolean>
+}
+
+export const cancelNativeAlarmClock = async() => {
+  return UtilsModule.cancelAlarmClock() as Promise<boolean>
+}
+
+export const consumePendingAlarmClockTrigger = async(): Promise<{ timestamp: number } | null> => {
+  return UtilsModule.consumePendingAlarmClockTrigger()
+}
+
+export const onAlarmClockTrigger = (handler: (event: { timestamp: number }) => void): (() => void) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  const eventEmitter = new NativeEventEmitter(UtilsModule)
+  const eventListener = eventEmitter.addListener('alarm-trigger', event => {
+    handler(event as { timestamp: number })
+  })
+
+  return () => {
+    eventListener.remove()
+  }
+}

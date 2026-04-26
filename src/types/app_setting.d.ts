@@ -157,6 +157,51 @@ declare global {
       'player.timeoutExitPlayed': boolean
 
       /**
+       * 音乐闹钟-触发时间（HH:mm）
+       */
+      'player.alarmClock': string
+
+      /**
+       * 音乐闹钟-列表配置（JSON）
+       */
+      'player.alarmClocks': string
+
+      /**
+       * 音乐闹钟-是否启用
+       */
+      'player.alarmEnable': boolean
+
+      /**
+       * 音乐闹钟-下次触发时间戳
+       */
+      'player.alarmClockTimestamp': string
+
+      /**
+       * 音乐闹钟-重复模式
+       */
+      'player.alarmRepeat': 'once' | 'everyday' | 'workday' | 'weekend'
+
+      /**
+       * 音乐闹钟-播放来源
+       */
+      'player.alarmSource': 'love' | 'current'
+
+      /**
+       * 音乐闹钟-是否应用闹钟音量
+       */
+      'player.alarmApplyVolume': boolean
+
+      /**
+       * 音乐闹钟-音量
+       */
+      'player.alarmVolume': number
+
+      /**
+       * 音乐闹钟-是否已确认自启动设置
+       */
+      'player.alarmAutoStartConfirmed': boolean
+
+      /**
        * 点击相同列表内的歌曲切歌时是否清空已播放列表（随机模式下列表内所有歌曲会重新参与随机）
        */
       'player.isAutoCleanPlayedList': boolean
@@ -353,4 +398,3 @@ declare global {
     }
   }
 }
-

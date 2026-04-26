@@ -1,5 +1,21 @@
 import { compareVer } from '@/utils'
 
+const buildLegacyAlarmList = (setting: any) => {
+  const time = typeof setting['player.alarmClock'] == 'string' && setting['player.alarmClock'] ? setting['player.alarmClock'] : ''
+  if (!time) return '[]'
+
+  return JSON.stringify([{
+    id: `legacy_${Date.now()}`,
+    time,
+    enabled: !!setting['player.alarmEnable'],
+    repeat: setting['player.alarmRepeat'] ?? 'once',
+    source: setting['player.alarmSource'] ?? 'love',
+    applyVolume: !!setting['player.alarmApplyVolume'],
+    volume: typeof setting['player.alarmVolume'] == 'number' ? setting['player.alarmVolume'] : 0.8,
+    skipDates: [],
+  } satisfies LX.AlarmClock.Item])
+}
+
 export default (setting: any): Partial<LX.AppSetting> => {
   setting = { ...setting }
 
@@ -43,6 +59,11 @@ export default (setting: any): Partial<LX.AppSetting> => {
     setting['common.isAgreePact'] = setting.isAgreePact
     setting['sync.enable'] = setting.sync?.enable
     setting['theme.id'] = setting.themeId
+  }
+
+  if (compareVer(setting.version as string, '2.1') < 0) {
+    setting['player.alarmClocks'] = buildLegacyAlarmList(setting)
+    setting['player.alarmAutoStartConfirmed'] = false
   }
 
   return setting
